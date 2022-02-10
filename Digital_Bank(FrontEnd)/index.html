@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" href="src/Image/icon.png">
+    <title>بانک دیجیتال</title>
+</head>
+<body>
+    <nav>
+        <p class="login-desc">اطلاعات حساب را جهت ورود وارد نمایید</p>
+        <img src="src/Image/icon.png" alt="money" class="logo">
+        <form class="login">
+            <input type="text" name="username" id="username" class="login-input username" placeholder="نام کاربری">
+            <input type="password" name="password" id="password" class="login-input password" placeholder="رمز عبور">
+            <button class="btn-login" type="submit">ورود</button>
+        </form>
+    </nav>
+    <main class="app">
+        <div class="balance">
+          <div class="balance-desc">
+              <p class="balance-lable"> موجودی کل </p>
+              <p class="balance-date">تاریخ<span class="date">2/10/2022</span></p>
+          </div>
+          <p class="balance-value"> 0000 <sup class="balance-unit">تومان</sup> </p>
+        </div>
+        <div class="movments">
+        </div>
+        <div class="summary">
+            <p class="summary_label">واریزی</p>
+            <p class="summary_value  summary_value_in">0000</p>
+            <p class="summary_label">خروجی</p>
+            <p class="summary_value summary_value_out">0000</p>
+            <p class="summary_label">سود</p>
+            <p class="summary_value summary_value_interest">0000</p>
+            
+        </div>
+        <div class="logout-timer">
+            <p>تا <span class="timer">5:00</span> دیگر از سیستیم خارج خواهید شد </p>
+            <button class="sort">&DownArrow;</button>
+        </div>
+        <div class="process transfer">
+            <h2>انتقال</h2>
+            <form class="action-form action-form">
+                <input type="text" name="transfer-to" id="transfer-to" class="form-input transfer-to-input">
+                <input type="text" name="transfer-value" id="transfer-value" class="form-input transfer-to-value">
+                <button class="form-btn">&rightarrow;</button>
+                <label for="transfer-to" class="form-label">واریز به</label>
+                <label for="transfer-value" class="form-label">مقدار</label>
+            </form>
+        </div>
+        <div class="process loan">
+            <h2>انتقال</h2>
+            <form class="action-form action-form">
+                
+            </form>
+        </div>
+        <div class="process close">
+            <h2>انتقال</h2>
+            <form class="action-form action-form">
+                
+            </form>
+        </div>
+    </main>
+</body>
+</html>
