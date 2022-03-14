@@ -1,0 +1,243 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+  @font-face {
+      font-family: iransans;
+      src: url("../font/IRANSansWeb.ttf");
+  }
+  html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: iransans, arial;
+    color: #444;
+    background-color: #f3f3f3;
+    height: 100vh;
+    padding: 2rem;
+  }
+  
+.welcome-label{
+    direction: rtl;
+    font-size: 2rem;
+    font-family: iransans;
+}
+.alarm-danger{
+    color: red;
+}
+.alarm-valid{
+    color: #5fbb14;
+}
+.logo{
+    width: 3rem;
+}
+nav{
+    display: flex;
+    padding:2rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+}
+.login-input{
+    border:none;
+    background-color: white;
+    height: 3.5rem;
+    border-radius: 1rem;
+    margin: auto 1rem;
+    text-align: center;
+}
+.btn-login{
+    background-color: #4cb124;
+    border: none;
+    padding:1rem 1.5rem ;
+    border-radius: 2rem;
+    color: white;
+}
+.app{
+    position: relative;
+    max-width: 100rem;
+    margin: 4rem auto;
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    grid-template-rows: auto repeat(3, 15rem) auto;
+    gap: 2rem;
+
+    opacity: 0;
+}
+
+
+.balance{
+    grid-column: 1 / span 2;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 20px;
+}
+
+.balance-desc{
+    text-align: right;
+}
+.balance .balance-lable{
+    color: #2f2f2f;
+    font-size: 3rem;
+    margin: 1rem 0rem;
+}
+.balance-date{
+    font-weight: bold;
+    font-size: 1.6rem;
+    color: #555;
+}
+.balance-date .date{
+    margin:2rem 1rem;
+}
+.balance-value{
+    color: #2f2f2f;
+    font-size: 4rem;
+    margin: 1rem 1rem;
+}
+.balance-unit{
+    font-size: 1.6rem;
+}
+.movments{
+    grid-row: 2 / span 3;
+    background-color: white;
+    overflow: scroll;
+}
+
+.summary{
+    grid-column:2 / 1 span;
+    display: flex;
+    align-items: baseline;
+    flex-direction: row-reverse;
+}
+.logout-timer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-column:1 / 1 span;
+    grid-row: 5 / 1 span;
+    direction: rtl;
+    font-size: 1.7rem;
+}
+.timer{
+    font-weight: bold;
+}
+.summary_label {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  
+.summary_value {
+    font-size: 2.2rem;
+    margin-right: 1rem;
+    margin-left: 2rem;
+    color: #4cb124;
+  }
+.summary_value_out{
+    color: #d84336;
+}
+.process{
+    text-align: right;
+    border-radius: 1rem;
+  padding: 1.5rem 4rem;
+  color: #333;
+  }
+.process h2{
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+  }
+.transfer{
+      grid-row: 2 / span 1;
+      background-image: linear-gradient(to top right,#0d90b8,#66d5f6);
+  }
+.loan{
+    grid-row: 3 / span 1;
+    background-image: linear-gradient(to top right,#68b108,#b2e074);
+  }
+.close{
+    grid-row: 4 / span 1;
+    background-image: linear-gradient(to top right,#d84336,rgb(245, 118, 118));
+  }
+.action-form{
+    display: grid;
+    grid-template-columns: 2.5fr 2.5fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.4rem 1rem;
+}
+.form-label{
+    text-align: center;
+    padding: 0.5rem 1rem;
+    font-size: 1.7rem;
+    font-weight: 500;
+}
+.input-form{
+    width: 100%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.4);
+  font-family: inherit;
+  font-size: 2rem;
+  text-align: center;
+  color: #333;
+  padding: 0.3rem 1rem;
+  border-radius: 0.7rem;
+  transition: all 0.3s;
+}
+.input-form:focus{
+    outline: none;
+    background-color: rgba(255,255,255, 0.6);
+}
+.btn-form{
+    border: none;
+  border-radius: 0.7rem;
+  font-size: 1.8rem;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.action-form.form-loan{
+    grid-template-columns: 3fr 1fr 2.5fr;
+}
+.loan-label{
+    grid-row: 2 / 1 span;
+}
+.movments-row{
+    border-bottom: #eee solid 1px;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns:1fr 3fr 1fr;
+    align-items: center;
+    padding: 2.25rem 4rem;
+    font-size: 1.5rem;
+}
+.movment-deposit{
+    padding: 2rem 1rem;
+    border-radius: 3rem;
+    background-image:linear-gradient(to top right,#5fbb14,#98df5e);
+}
+.movment-withdrawal{
+    padding: 2rem 1rem;
+    border-radius: 3rem;
+    background-image:linear-gradient(to top right,#ec3f20,#fb6d53);
+}
+.movments-type{
+    grid-column: 3 /1 span;
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 0.1rem 1rem;
+    direction: rtl;
+}
+.movments-date{
+    grid-column:2 / 1 span ;
+    margin-right: 2rem;
+    text-align: right;
+    direction: rtl;
+}
+.movments-value{
+    grid-column: 1 / 1 span;
+    font-size: 2rem;
+}
