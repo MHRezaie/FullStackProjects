@@ -9,6 +9,81 @@
     <link rel="stylesheet" href="src/style/indexStyle.css">
 </head>
 <body>
+<?php
+    include './includes/db.php';
+    $usernameErr=$lnameErr=$fnameErr = $emailErr = $genderErr = $websiteErr = "";
+    $name = $email = $gender = $comment = $website = "";
+    if(isset($_POST['submit'])){
+        $username=$_POST['username'];
+        $fName=$_POST['fName'];
+        $lName=$_POST['lName'];
+        $email=$_POST['email'];
+        $password=$_POST['password'];
+    
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (empty($_POST["username"])) {
+            $usernameErr = "Name is required";
+        } else {
+            $username = test_input($_POST["username"]);
+            // check if name only contains letters and whitespace
+            if (!preg_match("/^[a-zA-Z-' ]*$/",$username)) {
+            $usernameErr = "نام کاربری فقط حروف الفبا انگلیسی و فاصله مجاز است";
+            }
+        }
+        if (empty($_POST["fName"])) {
+            $fnameErr = "Name is required";
+        } else {
+            $fName = test_input($_POST["fName"]);
+            // check if name only contains letters and whitespace
+            if (!preg_match("/^[a-zA-Z-' ]*$/",$fName)) {
+            $fnameErr = "Only letters and white space allowed";
+            }
+        }
+        if (empty($_POST["lName"])) {
+            $lnameErr = "Name is required";
+        } else {
+            $lName = test_input($_POST["lName"]);
+            // check if name only contains letters and whitespace
+            if (!preg_match("/^[a-zA-Z-' ]*$/",$lName)) {
+            $lnameErr = "Only letters and white space allowed";
+            }
+        }
+        
+        if (empty($_POST["email"])) {
+            $emailErr = "Email is required";
+        } else {
+            $email = test_input($_POST["email"]);
+            // check if e-mail address is well-formed
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format";
+            }
+        }
+            
+        if (empty($_POST["password"])) {
+            $passwordErr = "Password is required";
+        } else {
+            $password = test_input($_POST["password"]);
+            }
+        }
+        $cryptedPass=crypt($password,'$5$rounds=5000$digitalbankrandomstring$KqJWpanXZHKq2BOB43TSaYhEWsQ1Lr5QNyPCDH/Tp.6');
+        $queryStr="insert into users(username,first_name,last_name,email,password)";
+        $queryStr.=" values ('$username','$fName','$lName','$email','$cryptedPass')";
+        // global $connection;
+        // $insertResult=mysqli_query($connection,$queryStr);
+        // if(!$insertResult){
+        //     die('insert failled'.mysqli_error($connection));
+        // }
+        if (!mysqli_query($connection, $queryStr)) {
+            printf("Error message: %s\n", mysqli_error($connection));
+        }
+    }
+    function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+    }
+?>
     <header>
         <nav class="nav">
             <a class="nav-logo-link" href="index.html">
@@ -16,7 +91,7 @@
                 <h1 class="nav-logo-name">بانک دیجیتال</h1>
             </a>
             <ul class="nav-links">
-                <li class="nav-link"><a href="#">افتتاح حساب</a></li>
+                <li class="nav-link show-modal"><a href="#">افتتاح حساب</a></li>
                 <li class="nav-link"><a href="#features"> ویژگی ها</a></li>
                 <li class="nav-link"><a href="#operations">عملیات</a></li>
                 <li class="nav-link"><a href="#expriences">رضایت مشتری</a></li>
@@ -159,7 +234,7 @@
         <div class="section__sign-up--title">
             <h1>بهترین زمان برای افتتاح حساب یکسال پیش بود. بهترین زمان بعدی همین امروز است</h1>
         </div>
-        <button class="btn btn__show-modal">همین امروز حساب باز کنید</button>
+        <button class="btn btn__show-modal show-modal">همین امروز حساب باز کنید</button>
     </section>
     <footer class="footer">
         <ul class="footer__nav">
@@ -177,14 +252,18 @@
     <div class="modal__sign-up hidden">
         <button class="btn modal__sign-up--btn-close">&Cross;</button>
         <h2 class="modal__sign-up--header">فقط در<span class="highlight">5 دقیقه</span> حساب خود را باز نمایید.</h2>
-        <form action="" class="sign-up--form">
+        <form action=<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?> method="post" class="sign-up--form">
+            <label for="password" class="sign-up__label">نام کاربری</label>
+            <input type="text" name="username" id="username" class="sign-up__input input sign-up__input--password" required >
             <label for="fName" class="sign-up__label">نام</label>
-            <input type="text" name="fName" id="fName" class="sign-up__input input sign-up__input--f-name">
-            <label for="lName" class="sign-up__label">نام خانوادگی</label>
-            <input type="text" name="lName" id="lName" class="sign-up__input input sign-up__input--l-name">
+            <input type="text" name="fName" id="fName" class="sign-up__input input sign-up__input--f-name" required >
+            <label for="lName" class="sign-up__label">نام خانوادگی</label> 
+            <input type="text" name="lName" id="lName" class="sign-up__input input sign-up__input--l-name" required >
             <label for="email" class="sign-up__label">ایمیل</label>
-            <input type="email" name="email" id="email" class="sign-up__input input sign-up__input--email">
-            <button type="submit" class="btn sign-up__submit--btn" >مرحله بعد &leftarrow;</button>
+            <input type="email" name="email" id="email" class="sign-up__input input sign-up__input--email" required >
+            <label for="password" class="sign-up__label"> رمز عبور</label>
+            <input type="password" name="password" id="password" class="sign-up__input input sign-up__input--password" required >
+            <button type="submit" name="submit" class="btn sign-up__submit--btn" >مرحله بعد &leftarrow;</button>
         </form>
     </div>
     <div class="overlay hidden "></div>
