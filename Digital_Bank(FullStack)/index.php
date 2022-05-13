@@ -11,9 +11,12 @@
 <body>
 <?php
     include './includes/db.php';
-    $usernameErr=$lnameErr=$fnameErr = $emailErr = $genderErr = $websiteErr = "";
-    $name = $email = $gender = $comment = $website = "";
+    include './includes/functions.php';
+    $usernameErr=$lnameErr=$fnameErr = $emailErr = $passwordErr = "";
+    $username = $fName = $lName = $email = $password = "";
+    $hasError=false;
     if(isset($_POST['submit'])){
+        $hasError=false;
         $username=$_POST['username'];
         $fName=$_POST['fName'];
         $lName=$_POST['lName'];
@@ -22,76 +25,117 @@
     
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST["username"])) {
-            $usernameErr = "Name is required";
+            $usernameErr = "نام کاربری ضروری است";
         } else {
             $username = test_input($_POST["username"]);
             // check if name only contains letters and whitespace
             if (!preg_match("/^[a-zA-Z-' ]*$/",$username)) {
-            $usernameErr = "نام کاربری فقط حروف الفبا انگلیسی و فاصله مجاز است";
+            $usernameErr = "فقط حروف الفبا انگلیسی و فاصله مجاز است";
+            $hasError=true;
+            }
+            if(!uniqueUsername($username)){
+                $usernameErr = "<br/>نام کاربری قبلا رزرو شده است";              
+                $hasError=true;
             }
         }
         if (empty($_POST["fName"])) {
-            $fnameErr = "Name is required";
+            $fnameErr = "نام ضروری است";
+            $hasError=true;
         } else {
             $fName = test_input($_POST["fName"]);
             // check if name only contains letters and whitespace
             if (!preg_match("/^[a-zA-Z-' ]*$/",$fName)) {
-            $fnameErr = "Only letters and white space allowed";
+            $fnameErr = "فقط حروف الفبا انگلیسی و فاصله مجاز است";
+            $hasError=true;
             }
         }
         if (empty($_POST["lName"])) {
-            $lnameErr = "Name is required";
+            $lnameErr = "نام خانوادگی ضروری است";
+            $hasError=true;
         } else {
             $lName = test_input($_POST["lName"]);
             // check if name only contains letters and whitespace
             if (!preg_match("/^[a-zA-Z-' ]*$/",$lName)) {
-            $lnameErr = "Only letters and white space allowed";
+                $lnameErr = "فقط حروف الفبا انگلیسی و فاصله مجاز است";
+                $hasError=true;
             }
         }
         
         if (empty($_POST["email"])) {
-            $emailErr = "Email is required";
+            $emailErr = "ایمیل ضروری است";
         } else {
             $email = test_input($_POST["email"]);
             // check if e-mail address is well-formed
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $emailErr = "Invalid email format";
+                $emailErr = "ایمیل نامعتبر است";
+                $hasError=true;
+            }
+            if(!uniqueEmail($email)){
+                $emailErr="<br/>ایمیل تکراری است";
+                $hasError=true;
             }
         }
             
         if (empty($_POST["password"])) {
-            $passwordErr = "Password is required";
+            $passwordErr = "رمز عبور ضروری است";
         } else {
-            $password = test_input($_POST["password"]);
+                $password = test_input($_POST["password"]);
+                if(strlen($password)<=8){
+                    $hasError=true;
+                    $passwordErr="رمز عبور باید بیشتر از 8 حرف یا عدد باشد";
+                }
             }
         }
-        $cryptedPass=crypt($password,'$5$rounds=5000$digitalbankrandomstring$KqJWpanXZHKq2BOB43TSaYhEWsQ1Lr5QNyPCDH/Tp.6');
-        $queryStr="insert into users(username,first_name,last_name,email,password)";
-        $queryStr.=" values ('$username','$fName','$lName','$email','$cryptedPass')";
-        // global $connection;
-        // $insertResult=mysqli_query($connection,$queryStr);
-        // if(!$insertResult){
-        //     die('insert failled'.mysqli_error($connection));
-        // }
-        if (!mysqli_query($connection, $queryStr)) {
-            printf("Error message: %s\n", mysqli_error($connection));
+        if(!$hasError){
+            $cryptedPass=crypt($password,'$5$rounds=5000$somesillystringfordigitalbankapplication$');
+            $queryStr="insert into users(username,first_name,last_name,email,password)";
+            $queryStr.=" values ('$username','$fName','$lName','$email','$cryptedPass')";
+            $result=$mysqli->query($queryStr);
+            $mysqli->close();
         }
+        
     }
-    function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-    }
+?>
+<?php
+    $loginHasError=false;
+    $loginEmail=$loginPassword="";
+    $loginPasswordErr=$loginEmailErr="";
+    if(isset($_POST['login__submit'])){
+        $loginHasError=false;
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (empty($_POST["login__email"])) {
+                $loginEmailErr = "ایمیل ضروری است";
+            } else {
+                $loginEmail = test_input($_POST["login__email"]);
+                // check if e-mail address is well-formed
+                if (!filter_var($loginEmail, FILTER_VALIDATE_EMAIL)) {
+                    $loginEmailErr = "ایمیل نامعتبر است";
+                    $loginHasError=true;
+                }
+            }
+            if (empty($_POST["login__password"])) {
+                $loginPasswordErr = "رمز عبور ضروری است";
+            } else {
+                    $loginPassword = test_input($_POST["login__password"]);
+                    if(strlen($loginPassword)<=8){
+                        $loginHasError=true;
+                        $loginPasswordErr="رمز عبور باید بیشتر از 8 حرف یا عدد باشد";
+                    }
+                }
+            }
+        // if($loginHasError){
+
+        // }
+        }
 ?>
     <header>
         <nav class="nav">
-            <a class="nav-logo-link" href="index.html">
+            <a class="nav-logo-link" href="index.php">
                 <img src="src/Image/icon.png" alt="بانک دیجیتال" class="nav-logo">
                 <h1 class="nav-logo-name">بانک دیجیتال</h1>
             </a>
             <ul class="nav-links">
-                <li class="nav-link show-modal"><a href="#">افتتاح حساب</a></li>
+                <li class="nav-link show-modal"><a href="#"> افتتاح حساب - ورود</a></li>
                 <li class="nav-link"><a href="#features"> ویژگی ها</a></li>
                 <li class="nav-link"><a href="#operations">عملیات</a></li>
                 <li class="nav-link"><a href="#expriences">رضایت مشتری</a></li>
@@ -253,20 +297,67 @@
         <button class="btn modal__sign-up--btn-close">&Cross;</button>
         <h2 class="modal__sign-up--header">فقط در<span class="highlight">5 دقیقه</span> حساب خود را باز نمایید.</h2>
         <form action=<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?> method="post" class="sign-up--form">
-            <label for="password" class="sign-up__label">نام کاربری</label>
-            <input type="text" name="username" id="username" class="sign-up__input input sign-up__input--password" required >
+            <label for="username" class="sign-up__label">نام کاربری</label>
+            <div class="input--holder">
+                <input type="text" name="username" id="username" class="sign-up__input input sign-up__input--password" required value="<?php if($username!='') echo $username;?>" >
+                <p class="error sign-up__error"><?php if($usernameErr) echo $usernameErr;?></p>
+            </div>    
             <label for="fName" class="sign-up__label">نام</label>
-            <input type="text" name="fName" id="fName" class="sign-up__input input sign-up__input--f-name" required >
+            <div class="input--holder">
+                <input type="text" name="fName" id="fName" class="sign-up__input input sign-up__input--f-name" required value="<?php if($fName!='') echo $fName;?>">
+                <p class="error sign-up__error"><?php  if($fnameErr) echo $fnameErr;?></p>
+            </div>
             <label for="lName" class="sign-up__label">نام خانوادگی</label> 
-            <input type="text" name="lName" id="lName" class="sign-up__input input sign-up__input--l-name" required >
+            <div class="input--holder">
+                <input type="text" name="lName" id="lName" class="sign-up__input input sign-up__input--l-name" required value="<?php if($lName!='') echo $lName;?>">
+                <p class="error sign-up__error"><?php if($lnameErr) echo $lnameErr;?></p>
+            </div>
             <label for="email" class="sign-up__label">ایمیل</label>
-            <input type="email" name="email" id="email" class="sign-up__input input sign-up__input--email" required >
+            <div class="input--holder">
+                <input type="email" name="email" id="email" class="sign-up__input input sign-up__input--email" required  value="<?php if($email!='') echo $email;?>">
+                <p class="error sign-up__error"><?php if($emailErr) echo $emailErr;?></p>
+            </div>
             <label for="password" class="sign-up__label"> رمز عبور</label>
-            <input type="password" name="password" id="password" class="sign-up__input input sign-up__input--password" required >
+            <div class="input--holder">
+                <input type="password" name="password" id="password" class="sign-up__input input sign-up__input--password" required >
+                <p class="error sign-up__error"><?php if($passwordErr) echo $passwordErr;?></p>
+            </div>
             <button type="submit" name="submit" class="btn sign-up__submit--btn" >مرحله بعد &leftarrow;</button>
         </form>
+        <div class="login__link--holder">
+            <a href="" class="show__login--modal">وارد حسابتان شوید</a>
+        </div>
     </div>
-    <div class="overlay hidden "></div>
+    <div class="modal__login hidden">
+        <button class="btn modal__login--btn-close">&Cross;</button>
+        <h2 class="modal__login--header">اطلاعات حساب خود را جهت ورود وارد نمایید</h2>
+        <form action=<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?> method="post" class="login--form">
+            <label for="login__email" class="login__label">ایمیل</label>
+            <div class="input--holder">
+                <input type="email" name="login__email" id="login__email" class="login__input input login__input--email" required  value="<?php if($loginEmail!='') echo $loginEmail;?>">
+                <p class="error login__error"><?php if($loginEmailErr) echo $loginEmailErr;?></p>
+            </div>
+            <label for="login__password" class="login__label"> رمز عبور</label>
+            <div class="input--holder">
+                <input type="password" name="login__password" id="login__password" class="login__input input login__input--password" required >
+                <p class="error login__error"><?php if($loginPasswordErr) echo $loginPasswordErr;?></p>
+            </div>
+            <button type="submit" name="login__submit" class="btn login__submit--btn" >وارد شوید &leftarrow;</button>
+        </form>
+        <div class="login__link--holder">
+            <a href="" class="show-modal">ایجاد حساب</a>
+        </div>
+    </div>
+    <div class="overlay hidden"></div>
     <script src="src/js/index-script.js"></script>
+    <?php
+        $str="<script>";
+        if($hasError)  
+            $str.= "document.querySelector('.show-modal').click();";
+        if($loginHasError)  
+            $str.="document.querySelector('.show__login--modal').click();";
+        $str.="</script>";
+        echo $str;
+    ?>
 </body>
 </html>

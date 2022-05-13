@@ -3,8 +3,9 @@
     $user='root';
     $password='12345678900MM.M';
     $database='digitalbank';
-    $connection=mysqli_connect($server,$user,$password,$database);
-    if(!$connection){
-        die('query fialed'.mysqli_error($connection));
+    $mysqli=new mysqli($server,$user,$password,$database);
+    if($mysqli->connect_errno){
+       echo 'failed to connect :'.$mysqli->connect_error;
+       exit();
     }
 ?>
