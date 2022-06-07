@@ -1,0 +1,45 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+:root {
+    --color-primary: #5ec576;
+    --color-secondary: #ffcb03;
+    --color-tertiary: #ff585f;
+    --color-primary-darker: #4bbb7d;
+    --color-secondary-darker: #ffbb00;
+    --color-tertiary-darker: #fd424b;
+    --color-primary-opacity: #5ec5763a;
+    --color-secondary-opacity: #ffcd0331;
+    --color-tertiary-opacity: #ff58602d;
+    --gradient-primary: linear-gradient(to top left, #39b385, #9be15d);
+    --gradient-secondary: linear-gradient(to top left, #ffb003, #ffcb03);
+  }
+@font-face {
+    font-family: iransans;
+    src: url('../font/IRANSansWeb.ttf');
+}
+
+.preloader__holder{
+    background-color: #93e6ff;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index:100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.preloader {
+    border: 8px solid #2154cd; /* Light grey */
+    border-top: 8px solid #bbcef9; /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1.5s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

@@ -71,14 +71,12 @@ let totalBalance;
 let timerInterval;
 
 const appContainer=document.querySelector('.app');
-const WelcomeLabel=document.querySelector('.welcome-label');
 const balanceLabel=document.querySelector('.balance-value');
 const totalWithdrawalLabel=document.querySelector('.summary_value_out');
 const totalDepositLabel=document.querySelector('.summary_value_in');
 const interestLabel=document.querySelector('.summary_value_interest');
 const tiemrLabel=document.querySelector('.timer');
 const dateLabel=document.querySelector('.date');
-const btnLogin=document.querySelector('.btn-login');
 const btnTransfer=document.querySelector('.btn-transfer');
 const btnSort=document.querySelector('.sort');
 const usernameInput=document.querySelector('.input-username');
@@ -93,38 +91,18 @@ const accounts = [account1, account2, account3, account4];
   console.log(e);
 }); */
 
-function UserLogin(evt){
-  let trueEnformation=0;
-  evt.preventDefault();
+function loginProccess(loginUsername){
   sortFlag=0;
-  const username=usernameInput.value;
-  const password=passwordInput.value;
-  accounts.forEach(function(ele,i){
-    if(ele.owner===username)
-      {
-        if(ele.pin===Number(password)){
-          exitAcc();
-          currentUser=ele;
-          loginFlag=1;
-          trueEnformation=1;
-           updateApp();
-           timerInterval= window.setInterval(calTimer,1000);
-        }
-      }
-  });
-  if(!trueEnformation)
-        {
-          WelcomeLabel.innerHTML="نام کاربری یا رمز عبور نادرست است !"
-          WelcomeLabel.classList.remove('alarm-valid');
-          WelcomeLabel.classList.add('alarm-danger');
-        }
+  const username=loginUsername;
+  exitAcc(); 
+  currentUser=account3;
+  loginFlag=1;
+  trueEnformation=1;
+  updateApp();
+  timerInterval= window.setInterval(calTimer,1000);
 }
 function welcomeUser(){
-  WelcomeLabel.innerHTML=`کاربر ${currentUser.owner} خوش آمدید `;
-  WelcomeLabel.classList.remove('alarm-danger');
-  WelcomeLabel.classList.add('alarm-valid');
   appContainer.style.opacity=100;
-
 }
 
 function displayMovments(sort){
@@ -198,7 +176,6 @@ function exitAcc(){
   appContainer.style.opacity=0;
   window.clearInterval(timerInterval);
   tiemrLabel.innerHTML='5:00';
-  WelcomeLabel.innerHTML="اطلاعات حساب را جهت ورود وارد نمایید";
 }
 function updateApp(){
   if(sortFlag==0)
@@ -254,8 +231,6 @@ function transferMoney(e){
     updateApp();
   }
 }
-
-btnLogin.addEventListener('click',UserLogin,false);
 btnSort.addEventListener('click',function(){
   btnSort.innerHTML="";
   if(sortFlag==-1)

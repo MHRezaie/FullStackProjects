@@ -7,8 +7,10 @@
     <title>بانک دیجیتال</title>
     <link rel="icon" href="src/Image/icon.png">
     <link rel="stylesheet" href="src/style/indexStyle.css">
+    <link rel="stylesheet" href="src/style/commonStyle.css">
 </head>
 <body>
+    <?php include "./includes/preloader.php"; ?>
 <?php
     include './includes/db.php';
     include './includes/functions.php';
@@ -34,7 +36,7 @@
             $hasError=true;
             }
             if(!uniqueUsername($username)){
-                $usernameErr = "<br/>نام کاربری قبلا رزرو شده است";              
+                $usernameErr = "نام کاربری قبلا رزرو شده است";              
                 $hasError=true;
             }
         }
@@ -71,7 +73,7 @@
                 $hasError=true;
             }
             if(!uniqueEmail($email)){
-                $emailErr="<br/>ایمیل تکراری است";
+                $emailErr="ایمیل تکراری است";
                 $hasError=true;
             }
         }
@@ -87,19 +89,29 @@
             }
         }
         if(!$hasError){
-            $cryptedPass=crypt($password,'$5$rounds=5000$somesillystringfordigitalbankapplication$');
+            $options = [
+                'cost' => 12,
+            ];
+            $cryptedPass=password_hash($password, PASSWORD_DEFAULT, $options);
             $queryStr="insert into users(username,first_name,last_name,email,password)";
-            $queryStr.=" values ('$username','$fName','$lName','$email','$cryptedPass')";
-            $result=$mysqli->query($queryStr);
+            $queryStr.=" values (?,?,?,?,?)";
+            $stmt=$mysqli->prepare($queryStr);
+            if($stmt){
+                $stmt->bind_param("sssss",$username,$fName,$lName,$email,$cryptedPass);
+                $stmt->execute();
+            }
+            else
+                die("failed : ".$mysqli->error);
             $mysqli->close();
         }
         
     }
 ?>
 <?php
-    $loginHasError=false;
+    session_start();
+    $validationHasError=$loginHasError=false;
     $loginEmail=$loginPassword="";
-    $loginPasswordErr=$loginEmailErr="";
+    $loginPasswordErr=$loginEmailErr=$loginErr="";
     if(isset($_POST['login__submit'])){
         $loginHasError=false;
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -123,9 +135,28 @@
                     }
                 }
             }
-        // if($loginHasError){
-
-        // }
+         if(!$loginHasError){
+            $loginStmt=$mysqli->prepare("select username,password from users where email = ? ");
+            if($loginStmt){
+                $loginStmt->bind_param("s",$loginEmail);
+                $loginStmt->execute();
+                $loginStmt->bind_result($selectedUsername,$selctedPassword);
+                $loginStmt->store_result();
+                $loginStmt->fetch();
+                if(password_verify($loginPassword,$selctedPassword) && $loginStmt->num_rows()==1){
+                    $_SESSION["isLogedin"]='true';
+                    $_SESSION["username"]=$selectedUsername;
+                    header("location: ../dashboard.php");
+                }
+                else{
+                    $validationHasError=true;
+                    $loginErr="ایمیل یا رمز عبور نامعتبر است";
+                }
+            }
+            else{
+                die("some error happened : ".$mysqli->error);
+            }
+         }
         }
 ?>
     <header>
@@ -135,7 +166,15 @@
                 <h1 class="nav-logo-name">بانک دیجیتال</h1>
             </a>
             <ul class="nav-links">
-                <li class="nav-link show-modal"><a href="#"> افتتاح حساب - ورود</a></li>
+                <?php
+                    if(isset($_SESSION['isLogedin']))
+                    {
+                        if($_SESSION['isLogedin'])
+                        echo '<li class="nav-link "><a href="/dashboard.php"> حساب بانکی </a></li>';
+                    }
+                    else
+                        echo '<li class="nav-link show-modal"><a href="#"> افتتاح حساب - ورود</a></li>';
+                ?>
                 <li class="nav-link"><a href="#features"> ویژگی ها</a></li>
                 <li class="nav-link"><a href="#operations">عملیات</a></li>
                 <li class="nav-link"><a href="#expriences">رضایت مشتری</a></li>
@@ -342,6 +381,7 @@
                 <input type="password" name="login__password" id="login__password" class="login__input input login__input--password" required >
                 <p class="error login__error"><?php if($loginPasswordErr) echo $loginPasswordErr;?></p>
             </div>
+            <p class="error login__validation--error"><?php if($loginErr) echo $loginErr;?></p>
             <button type="submit" name="login__submit" class="btn login__submit--btn" >وارد شوید &leftarrow;</button>
         </form>
         <div class="login__link--holder">
@@ -349,15 +389,19 @@
         </div>
     </div>
     <div class="overlay hidden"></div>
-    <script src="src/js/index-script.js"></script>
+    <script src="src/js/indexScript.js"></script>
+    <script src="src/js/commonScript.js"></script>
     <?php
         $str="<script>";
         if($hasError)  
             $str.= "document.querySelector('.show-modal').click();";
-        if($loginHasError)  
+        if($loginHasError || $validationHasError)  
+        {
             $str.="document.querySelector('.show__login--modal').click();";
-        $str.="</script>";
-        echo $str;
+            $str.="</script>";
+            echo $str;
+        }
+            
     ?>
 </body>
 </html>

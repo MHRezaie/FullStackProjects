@@ -1,13 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-  }
-  @font-face {
-      font-family: iransans;
-      src: url("../font/IRANSansWeb.ttf");
-  }
-  html {
+html {
     font-size: 62.5%;
     box-sizing: border-box;
   }
@@ -17,13 +8,27 @@
     color: #444;
     background-color: #f3f3f3;
     height: 100vh;
-    padding: 2rem;
   }
   
-.welcome-label{
+.welcome-lable{
+    text-align: center;
+    direction: rtl;
+    font-size: 3rem;
+    font-family: bold;
+    font-family: iransans;
+}
+.profile__img{
+    width: 50px;
+}
+.home__link{
+    color: var(--color-primary);
     direction: rtl;
     font-size: 2rem;
-    font-family: iransans;
+    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 .alarm-danger{
     color: red;
@@ -36,9 +41,18 @@
 }
 nav{
     display: flex;
-    padding:2rem 1.5rem;
+    padding:0.5rem 5rem;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px rgb(214, 214, 214) solid;
+    box-shadow: 0px 2px 3px #cacaca;;
+}
+.main__page{
+    text-decoration: none;
+    color: var(--color-primary);
+}
+.main__page:visited{
+    color: var(--color-primary);
 }
 .login-input{
     border:none;

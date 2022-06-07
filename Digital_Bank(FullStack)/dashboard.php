@@ -1,3 +1,17 @@
+<?php
+        session_start();
+        include './includes/db.php';
+        include './includes/functions.php';
+        $loginUsername="";
+        $isLogedin=false;
+        if(isset($_SESSION["isLogedin"]) && isset($_SESSION["username"])){
+            $loginUsername=$_SESSION['username'];
+            $isLogedin=true;
+        }
+        else{
+            header("location: ../index.php");
+        }
+    ?>
 <!DOCTYPE html>
 <html lang="fa">
 <head>
@@ -5,18 +19,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" type="text/css" href="src/style/style.css">
+    <link rel="stylesheet" href="src/style/commonStyle.css">
     <link rel="icon" href="src/Image/icon.png">
     <title>بانک دیجیتال</title>
 </head>
 <body>
+    <?php include "./includes/preloader.php"; ?>
     <nav>
-        <p class="welcome-label">اطلاعات حساب را جهت ورود وارد نمایید</p>
-        <img src="src/Image/icon.png" alt="money" class="logo">
-        <form class="login">
-            <input type="text" name="username" id="username" class="login-input input-username" placeholder="نام کاربری">
-            <input type="password" name="password" id="password" class="login-input input-password" placeholder="رمز عبور">
-            <button class="btn-login" type="submit">ورود</button>
-        </form>
+        <div class="profile">
+            <img src="/src/image/user.png" alt="پروفایل کاربری" class="profile__img">
+        </div>
+        <div class="home__link">
+            <img src="src/Image/icon.png" alt="money" class="logo"> <a href=".." class="main__page">صفحـــه اصلی</a>
+        </div>
     </nav>
     <main class="app">
         <div class="balance">
@@ -81,6 +96,14 @@
             </form>
         </div>
     </main>
-    <script src="src/js/script.js"></script>
+    <script src="src/js/script.js">
+    </script>
+    <script src="src/js/commonScript.js"></script>
+    <script>
+         <?php
+        if($isLogedin)
+            echo 'loginProccess("test");';
+        ?>
+    </script>
 </body>
 </html>
