@@ -44,15 +44,20 @@ nav{
     padding:0.5rem 5rem;
     align-items: center;
     justify-content: space-between;
+    background-color: white;
     border-bottom: 1px rgb(214, 214, 214) solid;
     box-shadow: 0px 2px 3px #cacaca;;
+    
 }
 .main__page{
     text-decoration: none;
     color: var(--color-primary);
 }
 .main__page:visited{
-    color: var(--color-primary);
+    color:var(--color-primary);
+}
+.main__page:hover{
+    color: var(--color-primary-darker);
 }
 .login-input{
     border:none;

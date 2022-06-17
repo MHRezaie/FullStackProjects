@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بانک دیجیتال</title>
+    <link rel="stylesheet" href="src/style/commonStyle.css">
     <link rel="icon" href="src/Image/icon.png">
     <link rel="stylesheet" href="src/style/indexStyle.css">
-    <link rel="stylesheet" href="src/style/commonStyle.css">
 </head>
 <body>
     <?php include "./includes/preloader.php"; ?>
@@ -23,8 +23,7 @@
         $fName=$_POST['fName'];
         $lName=$_POST['lName'];
         $email=$_POST['email'];
-        $password=$_POST['password'];
-    
+        $password=$_POST['password'];   
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST["username"])) {
             $usernameErr = "نام کاربری ضروری است";
@@ -36,7 +35,7 @@
             $hasError=true;
             }
             if(!uniqueUsername($username)){
-                $usernameErr = "نام کاربری قبلا رزرو شده است";              
+                $usernameErr = "نام کاربری قبلا رزرو شده است";
                 $hasError=true;
             }
         }
@@ -389,8 +388,8 @@
         </div>
     </div>
     <div class="overlay hidden"></div>
-    <script src="src/js/indexScript.js"></script>
     <script src="src/js/commonScript.js"></script>
+    <script src="src/js/indexScript.js"></script>
     <?php
         $str="<script>";
         if($hasError)  
@@ -401,7 +400,6 @@
             $str.="</script>";
             echo $str;
         }
-            
     ?>
 </body>
 </html>

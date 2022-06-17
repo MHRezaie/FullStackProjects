@@ -21,7 +21,7 @@
 }
 
 .preloader__holder{
-    background-color: #93e6ff;
+    background-color: #2e2e2e;
     width: 100%;
     height: 100vh;
     position: fixed;
@@ -31,8 +31,8 @@
     justify-content: center;
 }
 .preloader {
-    border: 8px solid #2154cd; /* Light grey */
-    border-top: 8px solid #bbcef9; /* Blue */
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid blue; /* Blue */
     border-radius: 50%;
     width: 80px;
     height: 80px;

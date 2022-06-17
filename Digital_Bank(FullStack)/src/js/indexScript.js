@@ -8,6 +8,7 @@
  const btnShowLoginModal=document.querySelector('.show__login--modal');
 
 
+ window.addEventListener('load',deleteLoader);
  function showModal(ev){
     ev.preventDefault();
     loginModal.classList.add('hidden');
@@ -37,3 +38,4 @@ document. addEventListener('keydown', function(event){
  btnCloseModal.addEventListener('click',hideModal);
  btnShowLoginModal.addEventListener('click',showLoginModal,false);
  btnCloseLoginModal.addEventListener('click',hideModal);
+ 

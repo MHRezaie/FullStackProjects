@@ -90,7 +90,10 @@ const accounts = [account1, account2, account3, account4];
   e.preventDefault();
   console.log(e);
 }); */
-
+window.addEventListener('load',function(){
+  deleteLoader();
+  
+});
 function loginProccess(loginUsername){
   sortFlag=0;
   const username=loginUsername;

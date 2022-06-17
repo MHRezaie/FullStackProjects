@@ -96,9 +96,9 @@
             </form>
         </div>
     </main>
+    <script src="src/js/commonScript.js"></script>
     <script src="src/js/script.js">
     </script>
-    <script src="src/js/commonScript.js"></script>
     <script>
          <?php
         if($isLogedin)
