@@ -38,20 +38,16 @@
           <div class="balance-desc">
               <p class="balance-lable"> موجودی کل </p>
               <p class="balance-date">تاریخ<span class="date">2/10/2022</span></p>
+              <button class="refresh__btn">بروز‌‌‌‌‌‌‌‌‌‌ رسانی</button>
           </div>
           <p class="balance-value"> 0000 <sup class="balance-unit">تومان</sup> </p>
         </div>
         <div class="movments">
-            <div class="movments-row">
-                <div class="movments-value">100000</div>
-                <div class="movments-date ">1400/11/11</div>
-                <div class="movments-type movment-deposit">1. واریز </div>
+          <div class="movements__holder">
+            <div class="movements__loader">
             </div>
-            <div class="movments-row">
-                <div class="movments-value">-3000</div>
-                <div class="movments-date">3 روز پیش</div>
-                <div class="movments-type movment-withdrawal">2. برداشت </div>
-            </div>
+            <p class="empty__movs--error"> </p>
+          </div>
         </div>
         <div class="summary">
             <p class="summary_label">واریزی</p>
@@ -68,7 +64,7 @@
         <div class="process transfer">
             <h2>انتقال</h2>
             <form class="action-form form-transfer">
-                <input type="text" name="transfer-to" id="transfer-to" class="input-form transfer-to-input">
+                <input type="text" name="transfer-to" id="transfer-to" class="input-form transfer-to-input" placeholder="نام کاربری">
                 <input type="number" name="transfer-value" id="transfer-value" class="input-form transfer-to-value">
                 <button class="btn-form btn-transfer">&rightarrow;</button>
                 <label for="transfer-to" class="form-label">واریز به</label>
@@ -99,11 +95,12 @@
     <script src="src/js/commonScript.js"></script>
     <script src="src/js/script.js">
     </script>
-    <script>
-         <?php
-        if($isLogedin)
-            echo 'loginProccess("test");';
-        ?>
-    </script>
+    <div class="msg__modal">
+        <button class="btn modal__login--btn-close">&Cross;</button>
+        <div class="msg__content">
+            <p class='msg error'>خطایی رخ داده است</p>
+            <p class='msg notif'>انتقال با موفقیت رخ داد</p>
+        </div>
+    </div>
 </body>
 </html>

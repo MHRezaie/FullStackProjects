@@ -12,7 +12,7 @@
 <body>
     <?php include "./includes/preloader.php"; ?>
 <?php
-    include './includes/db.php';
+    include './includes/db.php';        
     include './includes/functions.php';
     $usernameErr=$lnameErr=$fnameErr = $emailErr = $passwordErr = "";
     $username = $fName = $lName = $email = $password = "";
